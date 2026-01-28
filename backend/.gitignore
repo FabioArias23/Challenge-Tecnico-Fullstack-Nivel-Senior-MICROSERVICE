@@ -1,0 +1,31 @@
+# Dependencias
+/node_modules
+/npm-debug.log
+/yarn-error.log
+/pnpm-debug.log*
+
+# Compilación y producción
+/dist
+/build
+/coverage
+
+# Entorno y Secretos (¡CRÍTICO!)
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# IDEs
+.idea
+.vscode
+*.swp
+*.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Datos de Base de datos locales (si usas volúmenes locales)
+/database-data
+/postgres-data

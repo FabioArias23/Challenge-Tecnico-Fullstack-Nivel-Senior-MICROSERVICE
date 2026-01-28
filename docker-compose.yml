@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # --- API (NestJS) ---
+  api:
+    build:
+      context: ./backend      # <--- Busca en la carpeta backend
+      dockerfile: Dockerfile  # <--- Busca el archivo que acabamos de crear
+    container_name: ecommerce_api
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_HOST=postgres # Nombre del servicio de abajo
+      - REDIS_HOST=redis       # Nombre del servicio de abajo
+      - DATABASE_PORT=5432
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=root
+      - DATABASE_NAME=ecommercedb
+      - JWT_SECRET=supersecreto
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+
+  # --- DATABASE ---
+  postgres:
+    image: postgres:15-alpine
+    container_name: ecommerce_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DATABASE_USER:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-root}
+      POSTGRES_DB: ${DATABASE_NAME:-ecommercedb}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # OJO AQUI: Asumiendo que init.sql tambien esta dentro de backend
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql 
+
+  # --- REDIS ---
+  redis:
+    image: redis:7-alpine
+    container_name: ecommerce_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+volumes:
+  postgres_data:
+  redis_data:

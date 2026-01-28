@@ -1,0 +1,16 @@
+# Ignorar lockfiles gigantes
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Ignorar tests e2e si solo te interesa lógica de negocio
+test/
+
+# Ignorar assets estáticos o migraciones viejas si no son relevantes
+src/database/migration/history
+
+# Ignorar archivos de configuración del linter
+.eslintrc.js
+.prettierrc
+tsconfig.json
+tsconfig.build.json

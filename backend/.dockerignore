@@ -1,0 +1,14 @@
+
+.git
+.gitignore
+.dockerignore
+.repomixignore
+node_modules
+dist
+coverage
+npm-debug.log
+Dockerfile
+docker-compose.yml
+README.md
+test
+init.sql
