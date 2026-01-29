@@ -5,6 +5,7 @@ import {
   IsIn,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -15,8 +16,20 @@ export class CreateProductDto {
   @IsNumber()
   @IsNotEmpty()
   public categoryId: number;
-}
 
+  // AGREGAMOS ESTOS CAMPOS AL DTO:
+  @IsString()
+  @IsOptional()
+  public title?: string;
+
+  @IsString()
+  @IsOptional()
+  public code?: string;
+
+  @IsString()
+  @IsOptional()
+  public variationType?: string;
+}
 export class ProductDetailsDto {
   @IsString()
   @IsNotEmpty()

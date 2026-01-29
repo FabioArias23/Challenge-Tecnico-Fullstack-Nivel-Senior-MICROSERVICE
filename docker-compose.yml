@@ -9,6 +9,7 @@ services:
     container_name: ecommerce_api
     ports:
       - "3000:3000"
+    profiles: ["app"]
     environment:
       - DATABASE_HOST=postgres # Nombre del servicio de abajo
       - REDIS_HOST=redis       # Nombre del servicio de abajo

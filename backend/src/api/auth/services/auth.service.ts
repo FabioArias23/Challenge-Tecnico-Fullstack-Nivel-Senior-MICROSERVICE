@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   ConflictException,
   Injectable,
@@ -17,32 +18,53 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly roleService: RoleService,
-    private jwtService: JwtService,
-    private configService: ConfigService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
-  async login(user: CreateUserDto) {
-    const { email, password } = user;
-    const alreadyExistingUser = await this.userService.findByEmail(email);
-    if (!alreadyExistingUser)
-      throw new UnauthorizedException(errorMessages.auth.wronCredentials);
+  async login(credentials: CreateUserDto) {
+    const { email, password } = credentials;
 
+    // 1. Buscamos al usuario (Incluimos roles para que el front los tenga si los necesita)
+    const user = await this.userService.findByEmail(email, { roles: true });
+    
+    // IMPORTANTE: Si el usuario no existe, lanzamos 401
+    if (!user) {
+      throw new UnauthorizedException(errorMessages.auth.wrongCredentials);
+    }
+
+    // 2. Validamos la contraseña usando bcrypt (vía UserService)
     const isValidPassword = await this.userService.comparePassword(
       password,
-      alreadyExistingUser.password,
+      user.password,
     );
-    if (!isValidPassword)
-      throw new UnauthorizedException(errorMessages.auth.wronCredentials);
-    return this.generateToken({
-      id: alreadyExistingUser.id,
-      email,
+
+    if (!isValidPassword) {
+      throw new UnauthorizedException(errorMessages.auth.wrongCredentials);
+    }
+
+    // 3. Generamos el token
+    const tokenData = await this.generateToken({
+      id: user.id,
+      email: user.email,
     });
+
+    // 4. Devolvemos el token y datos básicos del usuario
+    return {
+      ...tokenData,
+      user: {
+        id: user.id,
+        email: user.email,
+        roles: user.roles,
+      },
+    };
   }
 
   async register(user: CreateUserDto) {
     const alreadyExistingUser = await this.userService.findByEmail(user.email);
-    if (alreadyExistingUser)
+    if (alreadyExistingUser) {
       throw new ConflictException(errorMessages.auth.userAlreadyExist);
+    }
 
     const customerRole = await this.roleService.findById(RoleIds.Customer);
 
@@ -54,8 +76,12 @@ export class AuthService {
   }
 
   async generateToken(payload: PayloadDto) {
+    // CAMBIO CRÍTICO: Usamos 'JWT_SECRET' directamente como está en el .env
+    // o el path exacto que use tu configuración (usualmente JWT_SECRET)
+    const secret = this.configService.get<string>('JWT_SECRET');
+
     const accessToken = await this.jwtService.signAsync(payload, {
-      secret: this.configService.get('jwt.secret'),
+      secret: secret,
     });
 
     return { accessToken };

@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable prettier/prettier */
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { RoleIds } from '../../role/enum/role.enum';
 import { CreateProductDto, ProductDetailsDto } from '../dto/product.dto';
@@ -11,11 +13,15 @@ import { User } from 'src/database/entities/user.entity';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Get(':id')
-  async getProduct(@Param() product: FindOneParams) {
-    return this.productService.getProduct(product.id);
+  // 1. LISTAR TODOS: Esta ruta es GET /api/product
+  // Es la que usa el Dashboard para llenar la tabla de la izquierda
+  @Get()
+  async getAllProducts() {
+    return this.productService.getAllProducts(); 
   }
 
+  // 2. CREAR: Esta ruta es POST /api/product/create
+  // IMPORTANTE: El frontend debe llamar a /api/product/create
   @Auth(RoleIds.Admin, RoleIds.Merchant)
   @Post('create')
   async createProduct(
@@ -23,6 +29,13 @@ export class ProductController {
     @CurrentUser() user: User,
   ) {
     return this.productService.createProduct(body, user.id);
+  }
+
+  // 3. OBTENER UNO: Esta ruta es GET /api/product/:id
+  // Se pone debajo de las fijas para que no confunda "create" con un "id"
+  @Get(':id')
+  async getProduct(@Param() product: FindOneParams) {
+    return this.productService.getProduct(product.id);
   }
 
   @Auth(RoleIds.Admin, RoleIds.Merchant)
