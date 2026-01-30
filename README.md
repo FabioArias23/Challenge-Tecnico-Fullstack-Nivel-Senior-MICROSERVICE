@@ -1,4 +1,4 @@
-# 🚀 Nexus Ecommerce - Challenge Técnico Senior
+# 🚀 Challenge Ecommerce - Challenge Técnico Senior
 
 Este proyecto es una plataforma de E-commerce de alto rendimiento construida bajo una **Arquitectura Orientada a Eventos (EDA)** y un modelo de microservicios desacoplados. La solución garantiza escalabilidad, integridad referencial y un procesamiento asíncrono eficiente para tareas críticas como la gestión de inventarios.
 
