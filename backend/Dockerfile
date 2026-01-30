@@ -23,4 +23,4 @@ EXPOSE 3000
 # 1. Corre migraciones (crea tablas en Supabase)
 # 2. Corre seeders (crea admin en Supabase)
 # 3. Arranca la app
-CMD ["sh", "-c", "npm run migration:run && npm run seed:run && npm run start:prod"]
+CMD ["sh", "-c", "npm run migration:run:prod && npm run seed:run:prod && node dist/main"]
