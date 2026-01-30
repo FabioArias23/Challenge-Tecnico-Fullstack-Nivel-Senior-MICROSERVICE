@@ -1,17 +1,22 @@
 // Estas interfaces deben coincidir con tus Entidades/DTOs del Repomix
 export interface Product {
   id: number;
-  name: string;
+  title: string;       // Cambiado de 'name' a 'title' para coincidir con el backend
+  code: string;        // Agregado
   description: string;
   price: number;
   isActive: boolean;
+  merchantId: number;  // Agregado
+  variationType: string; // Agregado
 }
 
 export interface Inventory {
   id: number;
-  productId: number;
+  productVariationId: number; // Agregado (importante para el cuadro de la derecha)
   quantity: number;
+  countryCode: string;        // Agregado
 }
+
 export interface BaseResponse<T> {
   isSuccess: boolean;
   message: string;
