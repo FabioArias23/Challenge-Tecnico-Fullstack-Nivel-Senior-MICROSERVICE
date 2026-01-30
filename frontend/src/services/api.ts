@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ApiResponse, Product, Inventory } from '../types/api.responses';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  baseURL: import.meta.env.VITE_API_URL, 
 });
 
 // ESTO ES LO QUE FALTA O ESTÁ FALLANDO:

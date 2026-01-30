@@ -8,7 +8,8 @@ export const Dashboard: React.FC = () => {
   const [inventory, setInventory] = useState<Inventory[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const API_URL = 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL;
+
 
   const fetchData = async () => {
     try {
