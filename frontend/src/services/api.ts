@@ -3,23 +3,26 @@ import axios from 'axios';
 import { ApiResponse, Product, Inventory } from '../types/api.responses';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, 
+  // Vercel inyectará esta URL en tiempo de build
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
-// ESTO ES LO QUE FALTA O ESTÁ FALLANDO:
-// Este interceptor es VITAL. Se ejecuta ANTES de cada click al botón.
+// Interceptor para inyectar el token en cada request
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
+    // ✅ Corregido: Usando backticks para el Template Literal
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
 export const productSvc = {
-  getAll: () => api.get('/product'),
-  create: (data: any) => api.post('/product/create', data),
+  // Nota: Devolvemos ApiResponse para que el Dashboard lea .data.data
+  getAll: () => api.get<ApiResponse<Product[]>>('/product'),
+  create: (data: any) => api.post<ApiResponse<any>>('/product/create', data),
 };
+
 export const inventorySvc = {
   getAll: () => api.get<ApiResponse<Inventory[]>>('/inventory'),
 };
