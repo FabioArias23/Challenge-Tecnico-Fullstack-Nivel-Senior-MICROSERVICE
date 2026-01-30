@@ -1,7 +1,3 @@
-Aquí tienes una propuesta de **README profesional y de alto nivel técnico** diseñada específicamente para la defensa de tu Challenge. Este documento no solo describe qué hace la app, sino que demuestra tu **seniority** al explicar el razonamiento detrás de cada decisión y cómo superaste los obstáculos críticos.
-
----
-
 # 🚀 Nexus Ecommerce - Challenge Técnico Senior
 
 Este proyecto es una plataforma de E-commerce de alto rendimiento construida bajo una **Arquitectura Orientada a Eventos (EDA)** y un modelo de microservicios desacoplados. La solución garantiza escalabilidad, integridad referencial y un procesamiento asíncrono eficiente para tareas críticas como la gestión de inventarios.
